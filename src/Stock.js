@@ -1,5 +1,10 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
+import StockForm from './StockForm';
+
+/**
+ * A class handling all of the stock API fetching and manipulation/demonstration of the data gathered
+ */
 
 class Stock extends React.Component {
     constructor(props) {
@@ -7,21 +12,35 @@ class Stock extends React.Component {
         this.state = {
             stockDayValues: [],
             stockPriceValues: [],
-            stockTicker: ''
+            stockTicker: 'AAPL'
         }
+    }
+
+    /**
+     * Receives Stock Ticker input from user through StockForm, and updates data on screen accordingly
+     * @param stockFormData All data collected in the StockForm (currently just the desired ticker)
+     */
+
+    receiveStockFormData = (stockFormData) => {
+        this.setState({stockTicker: stockFormData}, () => {
+            this.getStock();
+        })
     }
 
     componentDidMount() {
         this.getStock();
     }
 
+    /**
+    * Fetches US Stock Market API information from Alphadvantage, and stores data in stockDayValues and stockPriceValues
+    */
+
     getStock() {
         const API_KEY = '';
         const selfPointer = this;
         let stockDayValuesInner = [];
         let stockPriceValuesInner = [];
-        let stockTickerInput = 'IBM';
-        let daily_Stock_API_Call = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${stockTickerInput}&apikey=${API_KEY}`
+        let daily_Stock_API_Call = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
 
         fetch(daily_Stock_API_Call)
             .then(
@@ -31,8 +50,6 @@ class Stock extends React.Component {
             )
             .then(
                 function (data) {
-                    console.log(data)
-
                     for (var key in data['Time Series (Daily)']) {
                         stockDayValuesInner.push(key);
                         stockPriceValuesInner.push(data['Time Series (Daily)'][key]['1. open']);
@@ -41,7 +58,6 @@ class Stock extends React.Component {
                     selfPointer.setState({
                         stockPriceValues: stockPriceValuesInner,
                         stockDayValues: stockDayValuesInner,
-                        stockTicker: stockTickerInput
                     });
                 }
             )
@@ -51,6 +67,7 @@ class Stock extends React.Component {
         return (
             <div>
                 <h1>Stock Watcher</h1>
+                <StockForm sendStockFormData = {this.receiveStockFormData}></StockForm>
                 <Plot
                     data={[
                         {
