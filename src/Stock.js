@@ -36,7 +36,7 @@ class Stock extends React.Component {
     */
 
     getStock() {
-        const API_KEY = '';
+        const API_KEY = process.env.API_KEY;
         const selfPointer = this;
         let stockDayValuesInner = [];
         let stockPriceValuesInner = [];
