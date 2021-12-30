@@ -67,19 +67,23 @@ class Stock extends React.Component {
         return (
             <div>
                 <h1>Stock Watcher</h1>
-                <StockForm sendStockFormData = {this.receiveStockFormData}></StockForm>
-                <Plot
-                    data={[
-                        {
-                            x: this.state.stockDayValues,
-                            y: this.state.stockPriceValues,
-                            type: 'scatter',
-                            mode: 'lines+markers',
-                            marker: { color: 'red' },
-                        }
-                    ]}
-                    layout={{ width: 800, height: 600, title: `100 Days of ${this.state.stockTicker}` }}
-                />
+                <StockForm sendStockFormData={this.receiveStockFormData}></StockForm>
+
+                {this.state.stockDayValues.length > 0 ?
+                    <Plot
+                        data={[
+                            {
+                                x: this.state.stockDayValues,
+                                y: this.state.stockPriceValues,
+                                type: 'scatter',
+                                mode: 'lines+markers',
+                                marker: { color: 'red' },
+                            }
+                        ]}
+                        layout={{ width: 800, height: 600, title: `100 Days of ${this.state.stockTicker}` }}
+                    /> :
+                    <h2>Invalid Ticker</h2>
+                }
             </div>
         )
     }
