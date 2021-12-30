@@ -18,7 +18,7 @@ class StockForm extends React.Component {
      */
 
     sendData = () => {
-        this.props.sendStockFormData(this.state.value);
+        this.props.sendStockFormData(this.state.value.toUpperCase());
     }
 
     handleChange(event) {
