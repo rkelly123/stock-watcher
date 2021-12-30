@@ -12,6 +12,8 @@ This opens the app in development mode.
 - React/Node.js
 - npm install react.plotly.js plotly.js
 - Alphavantage Daily Stock Market API Key
+- npm install @auth0/auth0-react
+- Auth0 Domain and Client ID
 
 ## Backstory
 
