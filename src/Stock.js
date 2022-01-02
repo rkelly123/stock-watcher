@@ -9,10 +9,12 @@ import StockForm from './StockForm';
 class Stock extends React.Component {
     constructor(props) {
         super(props);
+        this.handleClick = this.handleClick.bind(this);
         this.state = {
             stockDayValues: [],
             stockPriceValues: [],
-            stockTicker: 'AAPL'
+            stockTicker: 'AAPL',
+            isToggleOn: false
         }
     }
 
@@ -22,7 +24,7 @@ class Stock extends React.Component {
      */
 
     receiveStockFormData = (stockFormData) => {
-        this.setState({stockTicker: stockFormData}, () => {
+        this.setState({ stockTicker: stockFormData }, () => {
             this.getStock();
         })
     }
@@ -40,9 +42,17 @@ class Stock extends React.Component {
         const selfPointer = this;
         let stockDayValuesInner = [];
         let stockPriceValuesInner = [];
-        let daily_Stock_API_Call = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
-
-        fetch(daily_Stock_API_Call)
+        let API_Mode = ''
+        let API_Link = ''
+        if (this.state.isToggleOn === false) {
+            API_Link = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
+            API_Mode = 'Time Series (Daily)'
+        }
+        else {
+            API_Link = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.state.stockTicker}&interval=5min&apikey=${API_KEY}`
+            API_Mode = 'Time Series (5min)'
+        }
+        fetch(API_Link)
             .then(
                 function (response) {
                     return response.json();
@@ -50,9 +60,9 @@ class Stock extends React.Component {
             )
             .then(
                 function (data) {
-                    for (var key in data['Time Series (Daily)']) {
+                    for (var key in data[API_Mode]) {
                         stockDayValuesInner.push(key);
-                        stockPriceValuesInner.push(data['Time Series (Daily)'][key]['1. open']);
+                        stockPriceValuesInner.push(data[API_Mode][key]['1. open']);
                     }
 
                     selfPointer.setState({
@@ -62,11 +72,22 @@ class Stock extends React.Component {
                 }
             )
     }
-
+    handleClick() {
+        this.setState(prevState => ({
+            isToggleOn: !prevState.isToggleOn,
+        }));
+        this.getStock()
+    }
     render() {
         return (
             <div>
                 <h1>Stock Watcher</h1>
+                <button onClick={this.handleClick}>
+                    {this.state.isToggleOn ? 'Intraday: ON' : 'Intraday: OFF'}
+                </button>
+                <button onClick={this.handleClick}>
+                    {this.state.isToggleOn ? 'Daily: OFF' : 'Daily: ON'}
+                </button>
                 <StockForm sendStockFormData={this.receiveStockFormData}></StockForm>
 
                 {this.state.stockDayValues.length > 0 ?
