@@ -9,9 +9,8 @@ import StockForm from './StockForm';
 class Stock extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
         this.state = {
-            stockDayValues: [],
+            stockTimeValues: [],
             stockPriceValues: [],
             stockTicker: 'AAPL',
             isToggleOn: false
@@ -23,8 +22,8 @@ class Stock extends React.Component {
      * @param stockFormData All data collected in the StockForm (currently just the desired ticker)
      */
 
-    receiveStockFormData = (stockFormData) => {
-        this.setState({ stockTicker: stockFormData }, () => {
+    receiveStockFormData = (stockTickerInput, stockTimeScaleInput) => {
+        this.setState({ stockTicker: stockTickerInput, isToggleOn: stockTimeScaleInput }, () => {
             this.getStock();
         })
     }
@@ -34,13 +33,13 @@ class Stock extends React.Component {
     }
 
     /**
-    * Fetches US Stock Market API information from Alphadvantage, and stores data in stockDayValues and stockPriceValues
+    * Fetches US Stock Market API information from Alphadvantage, and stores data in stockTimeValues and stockPriceValues
     */
 
     getStock() {
         const API_KEY = process.env.API_KEY;
         const selfPointer = this;
-        let stockDayValuesInner = [];
+        let stockTimeValuesInner = [];
         let stockPriceValuesInner = [];
         let API_Mode = ''
         let API_Link = ''
@@ -61,40 +60,30 @@ class Stock extends React.Component {
             .then(
                 function (data) {
                     for (var key in data[API_Mode]) {
-                        stockDayValuesInner.push(key);
+                        stockTimeValuesInner.push(key);
                         stockPriceValuesInner.push(data[API_Mode][key]['1. open']);
                     }
 
                     selfPointer.setState({
                         stockPriceValues: stockPriceValuesInner,
-                        stockDayValues: stockDayValuesInner,
+                        stockTimeValues: stockTimeValuesInner,
                     });
                 }
             )
     }
-    handleClick() {
-        this.setState(prevState => ({
-            isToggleOn: !prevState.isToggleOn,
-        }));
-        this.getStock()
-    }
+
     render() {
         return (
             <div>
                 <h1>Stock Watcher</h1>
-                <button onClick={this.handleClick}>
-                    {this.state.isToggleOn ? 'Intraday: ON' : 'Intraday: OFF'}
-                </button>
-                <button onClick={this.handleClick}>
-                    {this.state.isToggleOn ? 'Daily: OFF' : 'Daily: ON'}
-                </button>
+
                 <StockForm sendStockFormData={this.receiveStockFormData}></StockForm>
 
-                {this.state.stockDayValues.length > 0 ?
+                {this.state.stockTimeValues.length > 0 ?
                     <Plot
                         data={[
                             {
-                                x: this.state.stockDayValues,
+                                x: this.state.stockTimeValues,
                                 y: this.state.stockPriceValues,
                                 type: 'scatter',
                                 mode: 'lines+markers',

@@ -7,10 +7,14 @@ import React from 'react';
 class StockForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: 'AAPL' };
+        this.state = {
+            value: 'AAPL',
+            isToggleOn: false,
+        };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     /**
@@ -18,7 +22,7 @@ class StockForm extends React.Component {
      */
 
     sendData = () => {
-        this.props.sendStockFormData(this.state.value.toUpperCase());
+        this.props.sendStockFormData(this.state.value.toUpperCase(), this.state.isToggleOn);
     }
 
     handleChange(event) {
@@ -34,15 +38,34 @@ class StockForm extends React.Component {
         this.sendData();
     }
 
+    handleClick() {
+        this.setState({
+            isToggleOn: !this.state.isToggleOn
+        }, () => {
+            this.render();
+            this.sendData();
+        })
+    }
+
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Stock Ticker:
-                    <input type="text" value={this.state.value} onChange={this.handleChange} />
-                </label>
-                <input type="submit" value="Submit" />
-            </form>
+            <>
+                <button onClick={this.handleClick}>
+                    {this.state.isToggleOn ? 'Intraday: ON' : 'Intraday: OFF'}
+                </button>
+
+                <button onClick={this.handleClick}>
+                    {this.state.isToggleOn ? 'Daily: OFF' : 'Daily: ON'}
+                </button>
+
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Stock Ticker:
+                        <input type="text" value={this.state.value} onChange={this.handleChange} />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
+            </>
         );
     }
 }
