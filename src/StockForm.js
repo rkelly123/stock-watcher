@@ -9,7 +9,7 @@ class StockForm extends React.Component {
         super(props);
         this.state = {
             value: 'AAPL',
-            graphMode: 'daily',
+            graphMode: '100 days of ',
         };
 
         this.handleChange = this.handleChange.bind(this);
