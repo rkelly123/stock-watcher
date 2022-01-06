@@ -2,28 +2,46 @@
   text-align: center;
 }
 
-.user-registration-buttons {
+button {
   position: absolute;
-  top: 15px;
-  right: 15px;
   display: inline-block;
   padding: 15px 25px;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
   outline: none;
   color: #fff;
-  background-color: #46b349;
+  background-color: #3b26af;
   border: none;
   border-radius: 15px;
-  box-shadow: 0 9px rgb(151, 151, 151);
+  box-shadow: 0 7px rgb(151, 151, 151);
 }
 
-.user-registration-buttons:hover {background-color: #3b8a3d}
+button:hover {background-color: #301e9b}
 
-.user-registration-buttons:active {
-  background-color: #3b8a3d;
+button:active {
+  background-color: #301e9b;
   box-shadow: 0 5px #666;
-  transform: translateY(4px);
+  transform: translateY(3px);
+}
+
+.user-registration-buttons {
+  top: 15px;
+  right: 15px;
+  font-size: 26px;
+}
+
+.intraday_button {
+  bottom: 275px;
+  left: 100px;
+  width: 175px;
+  height: 50px;
+}
+
+.daily_button {
+  bottom: 175px;
+  left: 100px;
+  width: 175px;
+  height: 50px;
 }

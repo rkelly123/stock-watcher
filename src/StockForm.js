@@ -7,10 +7,15 @@ import React from 'react';
 class StockForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: 'AAPL' };
+        this.state = {
+            value: 'AAPL',
+            graphMode: '100 days of ',
+        };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDailyClick = this.handleDailyClick.bind(this);
+        this.handleIntradayClick = this.handleIntradayClick.bind(this);
     }
 
     /**
@@ -18,7 +23,7 @@ class StockForm extends React.Component {
      */
 
     sendData = () => {
-        this.props.sendStockFormData(this.state.value.toUpperCase());
+        this.props.sendStockFormData(this.state.value.toUpperCase(), this.state.graphMode);
     }
 
     handleChange(event) {
@@ -34,15 +39,50 @@ class StockForm extends React.Component {
         this.sendData();
     }
 
+    /**
+     * Sets the displayed graph to the mode clicked by the user
+     */
+
+    handleIntradayClick() {
+        this.setState({
+            graphMode: "Today's "
+        }, () => {
+            this.renderNewData();
+        })
+    }
+
+    handleDailyClick() {
+        this.setState({
+            graphMode: "100 days of "
+        }, () => {
+            this.renderNewData();
+        })
+    }
+
+    renderNewData() {
+        this.render();
+        this.sendData();
+    }
+
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Stock Ticker:
-                    <input type="text" value={this.state.value} onChange={this.handleChange} />
-                </label>
-                <input type="submit" value="Submit" />
-            </form>
+            <>
+                <button className='intraday_button' onClick={this.handleIntradayClick}>
+                    Intraday
+                </button>
+
+                <button className='daily_button' onClick={this.handleDailyClick}>
+                    Daily
+                </button>
+
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Stock Ticker:
+                        <input type="text" value={this.state.value} onChange={this.handleChange} />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
+            </>
         );
     }
 }
