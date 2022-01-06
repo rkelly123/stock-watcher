@@ -43,11 +43,11 @@ class Stock extends React.Component {
         let stockPriceValuesInner = [];
         let API_Mode = ''
         let API_Link = ''
-        if (this.state.graphMode === '100 days of ') {
+        if (this.state.graphMode === "100 days of ") {
             API_Link = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
             API_Mode = 'Time Series (Daily)'
         }
-        else {
+        else if (this.state.graphMode === "Today's ") {
             API_Link = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.state.stockTicker}&interval=5min&apikey=${API_KEY}`
             API_Mode = 'Time Series (5min)'
         }

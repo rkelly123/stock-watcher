@@ -47,7 +47,7 @@ class StockForm extends React.Component {
         this.setState({
             graphMode: "Today's "
         }, () => {
-            this.updateScreen();
+            this.renderNewData();
         })
     }
 
@@ -55,11 +55,11 @@ class StockForm extends React.Component {
         this.setState({
             graphMode: "100 days of "
         }, () => {
-            this.updateScreen();
+            this.renderNewData();
         })
     }
 
-    updateScreen() {
+    renderNewData() {
         this.render();
         this.sendData();
     }
