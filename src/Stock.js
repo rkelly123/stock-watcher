@@ -13,7 +13,7 @@ class Stock extends React.Component {
             stockTimeValues: [],
             stockPriceValues: [],
             stockTicker: 'AAPL',
-            isToggleOn: false
+            textHolder: 'daily'
         }
     }
 
@@ -23,7 +23,7 @@ class Stock extends React.Component {
      */
 
     receiveStockFormData = (stockTickerInput, stockTimeScaleInput) => {
-        this.setState({ stockTicker: stockTickerInput, isToggleOn: stockTimeScaleInput }, () => {
+        this.setState({ stockTicker: stockTickerInput, textHolder: stockTimeScaleInput }, () => {
             this.getStock();
         })
     }
@@ -43,7 +43,7 @@ class Stock extends React.Component {
         let stockPriceValuesInner = [];
         let API_Mode = ''
         let API_Link = ''
-        if (this.state.isToggleOn === false) {
+        if (this.state.textHolder === 'daily') {
             API_Link = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
             API_Mode = 'Time Series (Daily)'
         }

@@ -9,12 +9,13 @@ class StockForm extends React.Component {
         super(props);
         this.state = {
             value: 'AAPL',
-            isToggleOn: false,
+            graphMode: 'daily',
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleDailyClick = this.handleDailyClick.bind(this);
+        this.handleIntradayClick = this.handleIntradayClick.bind(this);
     }
 
     /**
@@ -22,7 +23,7 @@ class StockForm extends React.Component {
      */
 
     sendData = () => {
-        this.props.sendStockFormData(this.state.value.toUpperCase(), this.state.isToggleOn);
+        this.props.sendStockFormData(this.state.value.toUpperCase(), this.state.graphMode);
     }
 
     handleChange(event) {
@@ -38,24 +39,40 @@ class StockForm extends React.Component {
         this.sendData();
     }
 
-    handleClick() {
+    /**
+     * Sets the displayed graph to the mode clicked by the user
+     */
+
+    handleIntradayClick() {
         this.setState({
-            isToggleOn: !this.state.isToggleOn
+            graphMode: "intraday"
         }, () => {
-            this.render();
-            this.sendData();
+            this.updateScreen();
         })
+    }
+
+    handleDailyClick() {
+        this.setState({
+            graphMode: "daily"
+        }, () => {
+            this.updateScreen();
+        })
+    }
+
+    updateScreen() {
+        this.render();
+        this.sendData();
     }
 
     render() {
         return (
             <>
-                <button onClick={this.handleClick}>
-                    {this.state.isToggleOn ? 'Intraday: ON' : 'Intraday: OFF'}
+                <button className='intraday_button' onClick={this.handleIntradayClick}>
+                    Intraday
                 </button>
 
-                <button onClick={this.handleClick}>
-                    {this.state.isToggleOn ? 'Daily: OFF' : 'Daily: ON'}
+                <button className='daily_button' onClick={this.handleDailyClick}>
+                    Daily
                 </button>
 
                 <form onSubmit={this.handleSubmit}>
