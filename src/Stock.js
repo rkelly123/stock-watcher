@@ -13,7 +13,7 @@ class Stock extends React.Component {
             stockTimeValues: [],
             stockPriceValues: [],
             stockTicker: 'AAPL',
-            textHolder: 'daily'
+            graphMode: '100 days of '
         }
     }
 
@@ -23,7 +23,7 @@ class Stock extends React.Component {
      */
 
     receiveStockFormData = (stockTickerInput, stockTimeScaleInput) => {
-        this.setState({ stockTicker: stockTickerInput, textHolder: stockTimeScaleInput }, () => {
+        this.setState({ stockTicker: stockTickerInput, graphMode: stockTimeScaleInput }, () => {
             this.getStock();
         })
     }
@@ -43,7 +43,7 @@ class Stock extends React.Component {
         let stockPriceValuesInner = [];
         let API_Mode = ''
         let API_Link = ''
-        if (this.state.textHolder === 'daily') {
+        if (this.state.graphMode === '100 days of ') {
             API_Link = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
             API_Mode = 'Time Series (Daily)'
         }
@@ -90,7 +90,7 @@ class Stock extends React.Component {
                                 marker: { color: 'red' },
                             }
                         ]}
-                        layout={{ width: 800, height: 600, title: `100 Days of ${this.state.stockTicker}` }}
+                        layout={{ width: 800, height: 600, title: `${this.state.graphMode} ${this.state.stockTicker}` }}
                     /> :
                     <h2>Invalid Ticker</h2>
                 }

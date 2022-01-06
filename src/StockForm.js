@@ -45,7 +45,7 @@ class StockForm extends React.Component {
 
     handleIntradayClick() {
         this.setState({
-            graphMode: "intraday"
+            graphMode: "Today's "
         }, () => {
             this.updateScreen();
         })
@@ -53,7 +53,7 @@ class StockForm extends React.Component {
 
     handleDailyClick() {
         this.setState({
-            graphMode: "daily"
+            graphMode: "100 days of "
         }, () => {
             this.updateScreen();
         })
