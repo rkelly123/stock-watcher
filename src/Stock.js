@@ -5,13 +5,14 @@ import StockForm from './StockForm';
 /**
  * A class handling all of the stock API fetching and manipulation/demonstration of the data gathered
  */
-
+ 
 class Stock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             stockTimeValues: [],
             stockPriceValues: [],
+            stockVolumeValues: [],
             stockTicker: 'AAPL',
             graphMode: '100 days of '
         }
@@ -41,6 +42,7 @@ class Stock extends React.Component {
         const selfPointer = this;
         let stockTimeValuesInner = [];
         let stockPriceValuesInner = [];
+        let stockVolumeValuesInner = [];
         let API_Mode = ''
         let API_Link = ''
         if (this.state.graphMode === "100 days of ") {
@@ -62,11 +64,13 @@ class Stock extends React.Component {
                     for (var key in data[API_Mode]) {
                         stockTimeValuesInner.push(key);
                         stockPriceValuesInner.push(data[API_Mode][key]['1. open']);
+                        stockVolumeValuesInner.push(data[API_Mode][key]['5. volume']);
                     }
 
                     selfPointer.setState({
                         stockPriceValues: stockPriceValuesInner,
                         stockTimeValues: stockTimeValuesInner,
+                        stockVolumeValues: stockVolumeValuesInner
                     });
                 }
             )
@@ -78,7 +82,7 @@ class Stock extends React.Component {
                 <h1>Stock Watcher</h1>
 
                 <StockForm sendStockFormData={this.receiveStockFormData}></StockForm>
-
+                <text>{this.state.stockTicker} Volume: {this.state.stockVolumeValues.at(0)}</text>
                 {this.state.stockTimeValues.length > 0 ?
                     <Plot
                         data={[

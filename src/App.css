@@ -45,3 +45,13 @@ button:active {
   width: 175px;
   height: 50px;
 }
+
+text {
+  color: green;
+  font-size: 26px;
+  text-align:end;
+  bottom: 175px;
+  left: 100px;
+  width: 175px;
+  height: 50px;
+}
