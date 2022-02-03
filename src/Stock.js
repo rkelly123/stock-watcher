@@ -82,7 +82,6 @@ class Stock extends React.Component {
                 <h1>Stock Watcher</h1>
 
                 <StockForm sendStockFormData={this.receiveStockFormData}></StockForm>
-                <text>{this.state.stockTicker} Volume: {this.state.stockVolumeValues.at(0)}</text>
                 {this.state.stockTimeValues.length > 0 ?
                     <Plot
                         data={[
@@ -98,6 +97,9 @@ class Stock extends React.Component {
                     /> :
                     <h2>Invalid Ticker</h2>
                 }
+                 <div className = "stockInfo">
+                    <p>{this.state.stockTicker} Volume: {this.state.stockVolumeValues.at(0)}</p>
+                    </div>
             </div>
         )
     }
