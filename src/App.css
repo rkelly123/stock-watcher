@@ -49,9 +49,9 @@ button:active {
 .stockInfo {
   position: absolute;
   display: inline-block;
-  color: green;
+  color: rgb(19, 0, 128);
   font-size: 26px;
-  padding: 100px 0 0;
+  padding: 200px 0 0;
   text-align: center;
   width: 170px;
   height: 50px;
