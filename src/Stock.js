@@ -81,7 +81,7 @@ class Stock extends React.Component {
         this.state.graphMode === "100 days of " ? 
                     volumeText = "(Past Day)"
                     :
-                    volumeText = "(Past 5 Min.)"
+                    volumeText = "(Past 5 Minutes)"
                 
         return (
             <div>
