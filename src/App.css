@@ -50,10 +50,9 @@ button:active {
   position: absolute;
   display: inline-block;
   color: rgb(19, 0, 128);
-  font-size: 26px;
+  font-size: 18px;
   padding: 200px 0 0;
   text-align: center;
   width: 200px;
   height: 50px;
-  
 }
