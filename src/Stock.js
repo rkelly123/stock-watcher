@@ -17,6 +17,9 @@ class Stock extends React.Component {
             company_52WeekHigh: [],
             company_52WeekLow: [],
             companyDescription: [],
+            priceToSalesRatio: [],
+            profitMargin: [],
+            RevenuePerShareTTM: [],
             stockTicker: 'AAPL',
             graphMode: '100 days of '
         }
@@ -47,10 +50,13 @@ class Stock extends React.Component {
         let stockTimeValuesInner = [];
         let stockPriceValuesInner = [];
         let stockVolumeValuesInner = [];
-        let companyNameInner = [] 
-        let company_52WeekHighInner = []
-        let company_52WeekLowInner = []
-        let companyDescriptionInner = []
+        let companyNameInner = [];
+        let company_52WeekHighInner = [];
+        let company_52WeekLowInner = [];
+        let companyDescriptionInner = [];
+        let priceToSalesRatioInner = [];
+        let profitMarginInner = [];
+        let RevenuePerShareTTMInner = [];
         let API_Mode = ''
         let API_Link = ''
         let company_OverviewAPI = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
@@ -97,12 +103,18 @@ class Stock extends React.Component {
                     company_52WeekHighInner.push(data['52WeekHigh']);
                     company_52WeekLowInner.push(data['52WeekLow']);
                     companyDescriptionInner.push(data['Description']);
+                    priceToSalesRatioInner.push(data['PriceToSalesRatioTTM']);
+                    profitMarginInner.push(data['ProfitMargin']);
+                    RevenuePerShareTTMInner.push(data['RevenuePerShareTTM']);
                     
                     selfPointer.setState({
                         companyName: companyNameInner,
                         company_52WeekHigh: company_52WeekHighInner,
                         company_52WeekLow: company_52WeekLowInner,
-                        companyDescription: companyDescriptionInner
+                        companyDescription: companyDescriptionInner,
+                        priceToSalesRatio: priceToSalesRatioInner,
+                        profitMargin: profitMarginInner,
+                        RevenuePerShareTTM: RevenuePerShareTTMInner
                     });
                 }
             )
@@ -134,14 +146,18 @@ class Stock extends React.Component {
                         ]}
                         layout={{ width: 800, height: 600, title: `${this.state.graphMode}${this.state.companyName}` }} /><div className="stockInfo">
 
-                            <p>{this.state.stockTicker} Information:</p>
+                            <h4>{this.state.stockTicker} Information:</h4>
                             <p>Volume {volumeText}: {this.state.stockVolumeValues.at(0)}</p>
                             <p>52 Week High: {this.state.company_52WeekHigh}</p>
                             <p>52 Week Low: {this.state.company_52WeekLow}</p>
-                            
+                            <p>Profit Margin: {this.state.profitMargin}</p>
+                            <p>Price to Shares Ratio (TTM): {this.state.priceToSalesRatio}</p>
+                            <p>Revenue Per Share (TTM) {this.state.RevenuePerShareTTM}</p>
+
                         </div>
 
-                        <h3>About the company: <br></br> {this.state.companyDescription}</h3>
+                        <h2>About the company:</h2>
+                        <h3>{this.state.companyDescription}</h3>
                         </>
                     :
                     <h2>Invalid Ticker</h2>
