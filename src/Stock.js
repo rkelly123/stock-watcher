@@ -5,7 +5,7 @@ import StockForm from './StockForm';
 /**
  * A class handling all of the stock API fetching and manipulation/demonstration of the data gathered
  */
- 
+
 class Stock extends React.Component {
     constructor(props) {
         super(props);
@@ -91,7 +91,7 @@ class Stock extends React.Component {
                 }
             )
 
-            fetch(company_OverviewAPI)
+        fetch(company_OverviewAPI)
             .then(
                 function (response) {
                     return response.json();
@@ -106,7 +106,7 @@ class Stock extends React.Component {
                     priceToSalesRatioInner.push(data['PriceToSalesRatioTTM']);
                     profitMarginInner.push(data['ProfitMargin']);
                     RevenuePerShareTTMInner.push(data['RevenuePerShareTTM']);
-                    
+
                     selfPointer.setState({
                         companyName: companyNameInner,
                         company_52WeekHigh: company_52WeekHighInner,
@@ -122,11 +122,11 @@ class Stock extends React.Component {
 
     render() {
         let volumeText = ""
-        this.state.graphMode === "100 days of " ? 
-                    volumeText = "(Past Day)"
-                    :
-                    volumeText = "(Past 5 Minutes)"
-                
+        this.state.graphMode === "100 days of " ?
+            volumeText = "(Past Day)"
+            :
+            volumeText = "(Past 5 Minutes)"
+
         return (
             <div>
                 <h1>Stock Watcher</h1>
@@ -134,18 +134,20 @@ class Stock extends React.Component {
                 <StockForm sendStockFormData={this.receiveStockFormData}></StockForm>
 
                 {this.state.stockTimeValues.length > 0 ?
-                    <><Plot
-                        data={[
-                            {
-                                x: this.state.stockTimeValues,
-                                y: this.state.stockPriceValues,
-                                type: 'scatter',
-                                mode: 'lines+markers',
-                                marker: { color: 'red' },
-                            }
-                        ]}
-                        layout={{ width: 800, height: 600, title: `${this.state.graphMode}${this.state.companyName}` }} /><div className="stockInfo">
+                    <>
+                        <Plot
+                            data={[
+                                {
+                                    x: this.state.stockTimeValues,
+                                    y: this.state.stockPriceValues,
+                                    type: 'scatter',
+                                    mode: 'lines+markers',
+                                    marker: { color: 'red' },
+                                }
+                            ]}
+                            layout={{ width: 800, height: 600, title: `${this.state.graphMode}${this.state.companyName}` }} />
 
+                        <div className="stockInfo">
                             <h4>{this.state.stockTicker} Information:</h4>
                             <p>Volume {volumeText}: {this.state.stockVolumeValues.at(0)}</p>
                             <p>52 Week High: {this.state.company_52WeekHigh}</p>
@@ -153,12 +155,11 @@ class Stock extends React.Component {
                             <p>Profit Margin: {this.state.profitMargin}</p>
                             <p>Price to Shares Ratio (TTM): {this.state.priceToSalesRatio}</p>
                             <p>Revenue Per Share (TTM) {this.state.RevenuePerShareTTM}</p>
-
                         </div>
 
                         <h2>About the company:</h2>
                         <h3>{this.state.companyDescription}</h3>
-                        </>
+                    </>
                     :
                     <h2>Invalid Ticker</h2>
                 }
