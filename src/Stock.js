@@ -14,12 +14,12 @@ class Stock extends React.Component {
             stockPriceValues: [],
             stockVolumeValues: [],
             companyName: [],
-            company_52WeekHigh: [],
-            company_52WeekLow: [],
+            company52WeekHigh: [],
+            company52WeekLow: [],
             companyDescription: [],
             priceToSalesRatio: [],
             profitMargin: [],
-            RevenuePerShareTTM: [],
+            revenuePerShareTTM: [],
             stockTicker: 'AAPL',
             graphMode: '100 days of '
         }
@@ -51,25 +51,25 @@ class Stock extends React.Component {
         let stockPriceValuesInner = [];
         let stockVolumeValuesInner = [];
         let companyNameInner = [];
-        let company_52WeekHighInner = [];
-        let company_52WeekLowInner = [];
+        let company52WeekHighInner = [];
+        let company52WeekLowInner = [];
         let companyDescriptionInner = [];
         let priceToSalesRatioInner = [];
         let profitMarginInner = [];
-        let RevenuePerShareTTMInner = [];
-        let API_Mode = ''
-        let API_Link = ''
-        let company_OverviewAPI = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
+        let revenuePerShareTTMInner = [];
+        let API_GraphMode = ''
+        let API_GraphLink = ''
+        let API_CompanyOverview = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
         if (this.state.graphMode === "100 days of ") {
-            API_Link = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
-            API_Mode = 'Time Series (Daily)'
+            API_GraphLink = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.stockTicker}&apikey=${API_KEY}`
+            API_GraphMode = 'Time Series (Daily)'
         }
         else if (this.state.graphMode === "Today's ") {
-            API_Link = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.state.stockTicker}&interval=5min&apikey=${API_KEY}`
-            API_Mode = 'Time Series (5min)'
+            API_GraphLink = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.state.stockTicker}&interval=5min&apikey=${API_KEY}`
+            API_GraphMode = 'Time Series (5min)'
         }
 
-        fetch(API_Link)
+        fetch(API_GraphLink)
             .then(
                 function (response) {
                     return response.json();
@@ -77,10 +77,10 @@ class Stock extends React.Component {
             )
             .then(
                 function (data) {
-                    for (var key in data[API_Mode]) {
+                    for (var key in data[API_GraphMode]) {
                         stockTimeValuesInner.push(key);
-                        stockPriceValuesInner.push(data[API_Mode][key]['1. open']);
-                        stockVolumeValuesInner.push(data[API_Mode][key]['5. volume']);
+                        stockPriceValuesInner.push(data[API_GraphMode][key]['1. open']);
+                        stockVolumeValuesInner.push(data[API_GraphMode][key]['5. volume']);
                     }
 
                     selfPointer.setState({
@@ -91,7 +91,7 @@ class Stock extends React.Component {
                 }
             )
 
-        fetch(company_OverviewAPI)
+        fetch(API_CompanyOverview)
             .then(
                 function (response) {
                     return response.json();
@@ -100,21 +100,21 @@ class Stock extends React.Component {
             .then(
                 function (data) {
                     companyNameInner.push(data['Name']);
-                    company_52WeekHighInner.push(data['52WeekHigh']);
-                    company_52WeekLowInner.push(data['52WeekLow']);
+                    company52WeekHighInner.push(data['52WeekHigh']);
+                    company52WeekLowInner.push(data['52WeekLow']);
                     companyDescriptionInner.push(data['Description']);
                     priceToSalesRatioInner.push(data['PriceToSalesRatioTTM']);
                     profitMarginInner.push(data['ProfitMargin']);
-                    RevenuePerShareTTMInner.push(data['RevenuePerShareTTM']);
+                    revenuePerShareTTMInner.push(data['RevenuePerShareTTM']);
 
                     selfPointer.setState({
                         companyName: companyNameInner,
-                        company_52WeekHigh: company_52WeekHighInner,
-                        company_52WeekLow: company_52WeekLowInner,
+                        company52WeekHigh: company52WeekHighInner,
+                        company52WeekLow: company52WeekLowInner,
                         companyDescription: companyDescriptionInner,
                         priceToSalesRatio: priceToSalesRatioInner,
                         profitMargin: profitMarginInner,
-                        RevenuePerShareTTM: RevenuePerShareTTMInner
+                        revenuePerShareTTM: revenuePerShareTTMInner
                     });
                 }
             )
@@ -150,11 +150,11 @@ class Stock extends React.Component {
                         <div className="stockInfo">
                             <h4>{this.state.stockTicker} Information:</h4>
                             <p>Volume {volumeText}: {this.state.stockVolumeValues.at(0)}</p>
-                            <p>52 Week High: {this.state.company_52WeekHigh}</p>
-                            <p>52 Week Low: {this.state.company_52WeekLow}</p>
+                            <p>52 Week High: {this.state.company52WeekHigh}</p>
+                            <p>52 Week Low: {this.state.company52WeekLow}</p>
                             <p>Profit Margin: {this.state.profitMargin}</p>
                             <p>Price to Shares Ratio (TTM): {this.state.priceToSalesRatio}</p>
-                            <p>Revenue Per Share (TTM) {this.state.RevenuePerShareTTM}</p>
+                            <p>Revenue Per Share (TTM) {this.state.revenuePerShareTTM}</p>
                         </div>
 
                         <h2>About the company:</h2>
